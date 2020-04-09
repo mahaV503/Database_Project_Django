@@ -1,0 +1,6 @@
+{%extends "WDS/base.html"%}
+{%block content%}
+{% for ci in cstmrkey%}
+<h1>Welcome {{ci.first_name}}</h1>
+{%endfor%}
+{%endblock content%}

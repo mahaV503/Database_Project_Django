@@ -1,0 +1,18 @@
+{%extends "WDS/base.html" %}
+{%load crispy_forms_tags%}
+{% block users %}
+	<div class = "content-section">
+		<form method="POST">{%csrf_token%}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4"> Log In</legend>
+			{{form|crispy }}</fieldset>
+	<div class="form-group">
+		<button class="btn btn-online-info" type="login">Sign Up</button>
+	</div>
+	<div class="border-top pt-3">
+		<small class="text-muted"> create an account?<a class="ml-2"href="{%url 'register'%}"> Signup Here</a></small>
+	</div>
+
+		</form>
+	</div>
+{% endblock users %}
