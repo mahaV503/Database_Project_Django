@@ -1,0 +1,16 @@
+{%extends "WDS/formbase.html"%}
+{%block title %}
+WDS || Payment
+{%endblock title%}
+{%block header%}
+Connect to WDS by Paymrnting Up
+{%endblock header%}
+{%block form%}
+
+  {{form.as_p}}
+ <button type="submit" class="btn btn-primary">Create Payment</button>
+  
+<div class="border-top pt-3">
+    <small class="text-muted"> Look Up Invoices<a class="ml-2"href="{%url 'WDS-Invoice'%}"> LookUp Invoices</a></small>
+{%endblock form%}
+  

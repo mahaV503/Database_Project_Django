@@ -2,152 +2,142 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import*
 #List of dictionaries with two dummy posts
+from django.shortcuts import redirect
+#from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from .forms import *
 
 
-customtemp =[
-{
-	'ssn_number':'vishnu',
-	'first_name':'as big as god',
-	'last_name':'lion',
-	'gender':'nyu',
-	'marital_status':'vishnu',
-	'type':'as big as god',
-	'mobile_number':'lion',
-	'email_id':'nyu',
-	'street':'vishnu',
-	'city':'as big as god',
-	'state':'lion',
-	'zip_code':'nyu'
-},
-{
-	'name':'srinivasreddy',
-	'age':'as big as universe',
-	'animal':'king',
-	'clg':'svu'
-}
-]
+def customercreate(request):
+    cform=customerform(request.POST or None)
+    if cform.is_valid():
+        cform.save()
+    context={
+    'form':cform
+    }
+    return render(request,"WDS/signup.html",context)
+#signup.html
+def drivercreate(request):
+    dform=driverform(request.POST or None)
+    if dform.is_valid():
+        dform.save()
+        drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':dform
+    }
+    return render(request,"WDS/driver.html",context)
+#driver.html
+def hpcreate(request):
+    hpform=hprform(request.POST or None)
+    if hpform.is_valid():
+        hpform.save()
+        #drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        #messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':hpform
+    }
+    return render(request,"WDS/homepremium.html",context)
+#homepremium.html
+def invoicecreate(request):
+    iform=invoiceform(request.POST or None)
+    if iform.is_valid():
+        iform.save()
+        #drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        #messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':iform
+    }
+    return render(request,"WDS/invoice.html",context)
+#invoice.html
+def paymentcreate(request):
+    pform=paymentform(request.POST or None)
+    if pform.is_valid():
+        pform.save()
+        #drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        #messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':pform
+    }
+    return render(request,"WDS/payment.html",context)
+#payment.html
+def vehiclecreate(request):
+    vform=vehicleform(request.POST or None)
+    if vform.is_valid():
+        vform.save()
+        #drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        #messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':vform
+    }
+    return render(request,"WDS/vehicle.html",context)
+#vehicle.html
+def housecreate(request):
+    hform=houseform(request.POST or None)
+    if hform.is_valid():
+        hform.save()
+        #drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        #messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':hform
+    }
+    return render(request,"WDS/house.html",context)
+#house.html
+def policycreate(request):
+    pform=policyform(request.POST or None)
+    if pform.is_valid():
+        pform.save()
+        #drivername=form.cleaned_data.get('first_name') #this is dictionary 
+        #messages.success(request,f'Account created for {drivername}')
+        #return redirect('WDS-home')
+         
+    context={
+    'form':pform
+    }
+    return render(request,"WDS/policy.html",context)
+#policy.html
 
-'''class Customer(models.Model):
-    ssn_number = models.BigIntegerField(primary_key=True)
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    gender = models.CharField(max_length=1)
-    marital_status = models.CharField(max_length=1)
-    type = models.CharField(max_length=1)
-    mobile_number = models.BigIntegerField(blank=True, null=True)
-    email_id = models.CharField(max_length=30, blank=True, null=True)
-    street = models.CharField(max_length=20)
-    city = models.CharField(max_length=15)
-    state = models.CharField(max_length=15)
-    zip_code = models.CharField(max_length=5)
+def login(request):
+    return render(request,'WDS/login.html')
 
-    class Meta:
-        managed = False
-        db_table = 'customer'
-
-
-class Driver(models.Model):
-    liscense_num = models.BigIntegerField(primary_key=True)
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    birth_date = models.DateTimeField()
-    vehicle_vin = models.ForeignKey('Vehicle', models.DO_NOTHING, db_column='vehicle_vin')
-
-    class Meta:
-        managed = False
-        db_table = 'driver'
-
-
-class HousePremium(models.Model):
-    premium_id = models.IntegerField(primary_key=True)
-    afn = models.IntegerField()
-    hss = models.IntegerField()
-    swimming_pool = models.CharField(max_length=1, blank=True, null=True)
-    basement = models.IntegerField()
-    premium_amount = models.BigIntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'house_premium'
-
-
-class Houses(models.Model):
-    house_id = models.BigIntegerField(primary_key=True)
-    purchase_date = models.DateTimeField()
-    purchase_value = models.BigIntegerField()
-    area = models.BigIntegerField()
-    house_type = models.CharField(max_length=1)
-    policy = models.ForeignKey('Policy', models.DO_NOTHING, blank=True, null=True)
-    premium = models.ForeignKey(HousePremium, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'houses'
-
-
-class Invoice(models.Model):
-    invoice_id = models.BigIntegerField(primary_key=True)
-    due_date = models.DateTimeField()
-    amount = models.IntegerField()
-    ssn_number = models.ForeignKey(Customer, models.DO_NOTHING, db_column='ssn_number')
-    policy = models.ForeignKey('Policy', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'invoice'
-
-
-class Payment(models.Model):
-    reciept_id = models.BigIntegerField(primary_key=True)
-    payment_date = models.DateTimeField()
-    method = models.CharField(max_length=2)
-    installment_amount = models.IntegerField()
-    invoice = models.ForeignKey(Invoice, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'payment'
-
-
-class Policy(models.Model):
-    policy_id = models.IntegerField(primary_key=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    insurance_status = models.CharField(max_length=1)
-    type = models.CharField(max_length=1)
-
-    class Meta:
-        managed = False
-        db_table = 'policy'
-
-
-class Vehicle(models.Model):
-    vin = models.CharField(primary_key=True, max_length=17)
-    vehicle_make = models.CharField(max_length=10)
-    vehicle_model = models.CharField(max_length=10)
-    vehicle_status = models.CharField(max_length=1)
-    vehicle_year = models.SmallIntegerField()
-    policy = models.ForeignKey(Policy, models.DO_NOTHING, blank=True, null=True)
-    premium_amount = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'vehicle'''
-
-
-
-def customerview(request):
-	view1={
-	'cstmrkey': Customer.objects.all()
-	}
-	#return HttpResponse('<h1> Welcome to we do secure <h1>')
-	return render(request, 'WDS/customers.html',view1)
+'''
 def homeview(request):
 	view1={
 	'cstmrkey': Customer.objects.all()
 	}
 	#return HttpResponse('<h1> Welcome to we do secure <h1>')
-	return render(request, 'WDS/home.html',view1)
+	return render(request, 'WDS/aHomePage/Home.html',view1)
+'''
 
-def aboutview(request):
-	return render(request,'WDS/about.html')
+def signup(request):
+    if request.method =='POST':
+        form=UserRegForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username=form.cleaned_data.get('username') #this is dictionary 
+            messages.success(request,f'Account created for {username}')
+            return redirect('WDS-home')
+    else:
+        form =UserRegForm()
+    return render(request,'WDS/signup.html',{'form':form})
+
+def home(request):
+    return render(request,'WDS/home.html')
+
+def about(request):
+    return render(request,'WDS/about.html')
+
+def emplogin(request):
+    return render(request,'/admin')

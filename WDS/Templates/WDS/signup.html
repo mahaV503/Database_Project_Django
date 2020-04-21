@@ -1,0 +1,17 @@
+{%extends "WDS/formbase.html"%}
+{%block title %}
+WDS || SignUp
+{%endblock title%}
+{%block header%}
+Connect to WDS by Signing Up
+{%endblock header%}
+{%block form%}
+
+  {{form.as_p}}
+
+  
+<button type="submit" class="btn btn-primary">Sign in</button>
+<div class="border-top pt-3">
+    <small class="text-muted"> Already have an account?<a class="ml-2"href="{%url 'WDS-login'%}"> SignIn Here</a></small>
+  </div>{%endblock form%}
+  

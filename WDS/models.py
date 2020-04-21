@@ -9,7 +9,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=20)
     gender = models.CharField(max_length=1)
     marital_status = models.CharField(max_length=1)
-    type = models.CharField(max_length=1)
+    i_type = models.CharField(max_length=1)
     mobile_number = models.BigIntegerField(blank=True, null=True)
     email_id = models.CharField(max_length=30, blank=True, null=True)
     street = models.CharField(max_length=20)

@@ -1,0 +1,16 @@
+{%extends "WDS/formbase.html"%}
+{%block title %}
+WDS || Vehicle
+{%endblock title%}
+{%block header%}
+Connect to WDS by Vehicling Up
+{%endblock header%}
+{%block form%}
+
+  {{form.as_p}}
+ <button type="submit" class="btn btn-primary">Create vehicle</button>
+  
+<div class="border-top pt-3">
+    <small class="text-muted"> Look Up Driver<a class="ml-2"href="{%url 'WDS-Driver'%}"> Register Driver here</a></small>
+{%endblock form%}
+ 
