@@ -1,3 +1,4 @@
+{%load crispy_forms_tags%}
 <!doctype html>
 <html lang="en">
   <head>
@@ -52,9 +53,12 @@
 
 	<div class="container">
   <!-- Content here -->
-
-                    
-                    	{%block form%} {%endblock%}
+{%if messages%}
+       {%for message in messages%}
+       <div class="alert alert-{{message.tags}}">
+         {{message}}
+       </div>  {%endfor%}           
+ {%endif%}                   	{%block form%} {%endblock%}
                     
         
 

@@ -16,6 +16,43 @@ ssn_number = models.BigIntegerField(primary_key=True)
     state = models.CharField(max_length=15)
     zip_code = models.CharField(max_length=5)
     '''
+
+class houseform(forms.ModelForm):
+	class Meta:
+		model=Houses
+		fields="__all__"
+class customerform(forms.ModelForm):
+	class Meta:
+		model=Customer
+		fields="__all__"
+class driverform(forms.ModelForm):
+	class Meta:
+		model=Driver
+		fields="__all__"
+class hprform(forms.ModelForm):
+	class Meta:
+		model=HousePremium
+		fields="__all__"
+class invoiceform(forms.ModelForm):
+	class Meta:
+		model=Invoice
+		fields="__all__"
+class paymentform(forms.ModelForm):
+	class Meta:
+		model=Payment
+		fields="__all__"
+class policyform(forms.ModelForm):
+	class Meta:
+		model=Policy
+		fields="__all__"
+class vehicleform(forms.ModelForm):
+	class Meta:
+		model=Vehicle
+		fields="__all__"
+
+
+
+'''
 class houseform(forms.ModelForm):
 	class Meta:
 		model=Houses
@@ -49,3 +86,4 @@ class vehicleform(forms.ModelForm):
 	class Meta:
 		model=Vehicle
 		fields=["vehicle_make","vehicle_model","vehicle_status","vehicle_year","premium_amount"]
+'''

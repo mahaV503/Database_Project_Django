@@ -3,19 +3,25 @@ from django.http import HttpResponse
 from .models import*
 #List of dictionaries with two dummy posts
 from django.shortcuts import redirect
-#from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import *
 
 
 def customercreate(request):
-    cform=customerform(request.POST or None)
-    if cform.is_valid():
-        cform.save()
-    context={
-    'form':cform
-    }
-    return render(request,"WDS/signup.html",context)
+    cform =customerform(request.POST or None)
+    if request.method =='POST':
+        cform=customerform(request.POST)
+        if cform.is_valid():
+            cform.save()
+            username=cform.cleaned_data.get('username') #this is dictionary 
+            messages.success(request,f'Account created for {username}')
+            return redirect('WDS-home')
+    
+    
+
+    return render(request,'WDS/signup.html',{'form':cform})
+
 #signup.html
 def drivercreate(request):
     dform=driverform(request.POST or None)
@@ -121,17 +127,8 @@ def homeview(request):
 	return render(request, 'WDS/aHomePage/Home.html',view1)
 '''
 
-def signup(request):
-    if request.method =='POST':
-        form=UserRegForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username=form.cleaned_data.get('username') #this is dictionary 
-            messages.success(request,f'Account created for {username}')
-            return redirect('WDS-home')
-    else:
-        form =UserRegForm()
-    return render(request,'WDS/signup.html',{'form':form})
+def emplogindefault(request):
+    return render(request,'admin/')
 
 def home(request):
     return render(request,'WDS/home.html')
@@ -140,4 +137,6 @@ def about(request):
     return render(request,'WDS/about.html')
 
 def emplogin(request):
-    return render(request,'/admin')
+    return render(request,'WDSadmin/')
+def boochio(request):
+    return render(request,'WDS/Boochicoo.html')
