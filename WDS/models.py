@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator
 # Create your models here.
-
+'''
 class Customer(models.Model):
     types=('H','Home Insurance'),('A','Auto Insurance')
     g_types=('M','Male'),('F','Female')
@@ -57,12 +57,12 @@ class Customer(models.Model):
     ('WI', 'Wisconsin'),
     ('WY', 'Wyoming'))
 
-    ssn_number = models.BigIntegerField(primary_key=True)
+    ssn_number = models.BigIntegerField()
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     gender = models.CharField(max_length=1,choices=g_types)
     marital_status = models.CharField(max_length=1)
-    type = models.CharField(max_length=1,choices=types)
+    policy_type = models.CharField(max_length=1,choices=types)
     mobile_number = models.BigIntegerField(blank=True, null=True)
     email_id = models.CharField(max_length=30, blank=True, null=True)
     street = models.CharField(max_length=20)
@@ -175,7 +175,7 @@ class Policy(models.Model):
 
 
 class Vehicle(models.Model):
-    vehicle_sta_types=('L','Leased'),('F','Financed'),('O','Owned')
+    
     vin = models.CharField(primary_key=True, max_length=17)
     vehicle_make = models.CharField(max_length=10)
     vehicle_model = models.CharField(max_length=10)
@@ -183,6 +183,196 @@ class Vehicle(models.Model):
     vehicle_year = models.SmallIntegerField()
     policy = models.ForeignKey(Policy, models.DO_NOTHING, blank=True, null=True)
     premium_amount = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'vehicle'
+    def __str__(self):
+        return str(self.vin)
+
+'''
+
+
+class Customer(models.Model):
+    types=('H','Home Insurance'),('A','Auto Insurance')
+    g_types=('M','Male'),('F','Female')
+    m_status=('S','Single'),('M','Married'),('W','Widowed')
+    state_choices = (('AL', 'Alabama'),
+    ('AZ', 'Arizona'),
+    ('AR', 'Arkansas'),
+    ('CA', 'California'),
+    ('CO', 'Colorado'),
+    ('CT', 'Connecticut'),
+    ('DE', 'Delaware'),
+    ('DC', 'District of Columbia'),
+    ('FL', 'Florida'),
+    ('GA', 'Georgia'),
+    ('ID', 'Idaho'),
+    ('IL', 'Illinois'),
+    ('IN', 'Indiana'),
+    ('IA', 'Iowa'),
+    ('KS', 'Kansas'),
+    ('KY', 'Kentucky'),
+    ('LA', 'Louisiana'),
+    ('ME', 'Maine'),
+    ('MD', 'Maryland'),
+    ('MA', 'Massachusetts'),
+    ('MI', 'Michigan'),
+    ('MN', 'Minnesota'),
+    ('MS', 'Mississippi'),
+    ('MO', 'Missouri'),
+    ('MT', 'Montana'),
+    ('NE', 'Nebraska'),
+    ('NV', 'Nevada'),
+    ('NH', 'New Hampshire'),
+    ('NJ', 'New Jersey'),
+    ('NM', 'New Mexico'),
+    ('NY', 'New York'),
+    ('NC', 'North Carolina'),
+    ('ND', 'North Dakota'),
+    ('OH', 'Ohio'),
+    ('OK', 'Oklahoma'),
+    ('OR', 'Oregon'),
+    ('PA', 'Pennsylvania'),
+    ('RI', 'Rhode Island'),
+    ('SC', 'South Carolina'),
+    ('SD', 'South Dakota'),
+    ('TN', 'Tennessee'),
+    ('TX', 'Texas'),
+    ('UT', 'Utah'),
+    ('VT', 'Vermont'),
+    ('VA', 'Virginia'),
+    ('WA', 'Washington'),
+    ('WV', 'West Virginia'),
+    ('WI', 'Wisconsin'),
+    ('WY', 'Wyoming'))
+
+    ssn_number = models.BigIntegerField()
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    gender = models.CharField(max_length=1,choices=g_types)
+    marital_status = models.CharField(max_length=1,choices=m_status)
+    policy_type = models.CharField(max_length=1,choices=types)
+    mobile_number = models.BigIntegerField(blank=True, null=True)
+    email_id = models.CharField(max_length=30, blank=True, null=True)
+    street = models.CharField(max_length=20)
+    city = models.CharField(max_length=15)
+    state = models.CharField(max_length=15,choices=state_choices)
+    zip_code = models.CharField(max_length=5)
+    cpk_id = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'customer'
+
+
+
+class Driver(models.Model):
+    liscense_num = models.BigIntegerField()
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    birth_date = models.DateTimeField()
+    vpk = models.ForeignKey('Vehicle', models.DO_NOTHING)
+    dpk_id = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'driver'
+    def __str__(self):
+        return str(self.liscense_num)
+
+
+class HousePremium(models.Model):
+    afn_types=(1,'Has Auto Fire Notification'),(0,"Don't have an AFN")
+    hss_types=(1,'Has Home Security System'),(0,"Don't have an HSS")
+    swimmingpool_types=('U','Underground'),('O','Overground'),('I','Indoor'),('M','Multiple')
+    basement_types=(1,'Has a basement'),(0,"Don't have a basement")
+    afn = models.IntegerField()
+    hss = models.IntegerField()
+    swimming_pool = models.CharField(max_length=1, blank=True, null=True)
+    basement = models.IntegerField()
+    premium_amount = models.BigIntegerField()
+    premium_id = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'house_premium'
+    def __str__(self):
+        return str(self.premium_id)
+
+
+class Houses(models.Model):
+    house_type=('S','Signle Family'),('M','Multi Family'),('C','Condominium'),('T','Town House')
+    purchase_date = models.DateTimeField()
+    purchase_value = models.BigIntegerField()
+    area = models.BigIntegerField()
+    house_type = models.CharField(max_length=1,choices=house_type)
+    policy = models.ForeignKey('Policy', models.DO_NOTHING, blank=True, null=True)
+    premium = models.ForeignKey(HousePremium, models.DO_NOTHING)
+    house_id = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'houses'
+    def __str__(self):
+        return str(self.house_id)
+
+
+class Invoice(models.Model):
+    due_date = models.DateTimeField()
+    amount = models.IntegerField()
+    cpk = models.ForeignKey(Customer, models.DO_NOTHING)
+    policy = models.ForeignKey('Policy', models.DO_NOTHING)
+    invoice_id = models.AutoField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'invoice'
+    def __str__(self):
+        return str(self.invoice_id)
+
+
+class Payment(models.Model):
+    payment_types=('PP','PayPal'),('Cr','Credit'),('De','Debit'),('Ch','Check')
+    reciept_id = models.AutoField(primary_key=True)
+    payment_date = models.DateTimeField()
+    method = models.CharField(max_length=2,choices=payment_types)
+    installment_amount = models.IntegerField()
+    invoice = models.ForeignKey(Invoice, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'payment'
+    def __str__(self):
+        return str(self.reciept_id)
+
+
+class Policy(models.Model):
+    type_types=('H','Home Insurance'),('A','Auto Insurance')
+    ins_sta_types=('C','Current'),('P','Payment')
+    policy_id = models.AutoField(primary_key=True)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    insurance_status = models.CharField(max_length=1,choices=ins_sta_types)
+    p_type = models.CharField(max_length=1,choices=type_types)
+
+    class Meta:
+        managed = False
+        db_table = 'policy'
+    def __str__(self):
+        return str(self.policy_id)
+
+
+class Vehicle(models.Model):
+    vehicle_sta_types=('L','Leased'),('F','Financed'),('O','Owned')
+    vin = models.CharField(max_length=6)
+    vehicle_make = models.CharField(max_length=10)
+    vehicle_model = models.CharField(max_length=10)
+    vehicle_status = models.CharField(max_length=1,choices=vehicle_sta_types)
+    vehicle_year = models.SmallIntegerField()
+    policy = models.ForeignKey(Policy, models.DO_NOTHING, blank=True, null=True)
+    premium_amount = models.IntegerField()
+    vpk_id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
