@@ -265,6 +265,9 @@ class Customer(models.Model):
         managed = False
         db_table = 'customer'
 
+    def __str__(self):
+        return str(self.first_name)
+
 
 
 class Driver(models.Model):
@@ -287,10 +290,10 @@ class HousePremium(models.Model):
     hss_types=(1,'Has Home Security System'),(0,"Don't have an HSS")
     swimmingpool_types=('U','Underground'),('O','Overground'),('I','Indoor'),('M','Multiple')
     basement_types=(1,'Has a basement'),(0,"Don't have a basement")
-    afn = models.IntegerField()
-    hss = models.IntegerField()
-    swimming_pool = models.CharField(max_length=1, blank=True, null=True)
-    basement = models.IntegerField()
+    afn = models.IntegerField(choices=afn_types)
+    hss = models.IntegerField(choices=hss_types)
+    swimming_pool = models.CharField(max_length=1, blank=True, null=True,choices=swimmingpool_types)
+    basement = models.IntegerField(choices=basement_types)
     premium_amount = models.BigIntegerField()
     premium_id = models.AutoField(primary_key=True)
 
